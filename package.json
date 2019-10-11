@@ -1,5 +1,5 @@
 {
-  "name": "mycli",
+  "name": "tianjian-mycli",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,5 +15,9 @@
   "preferGlobal": "true",
   "bin": {
     "myVueCli": "./vue-cli.js"
-  }
+  },
+  "repository": {
+    "type" : "git", 
+    "url": "https://github.com/tianjian-sky/myCli.git" 
+  } 
 }
