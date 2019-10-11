@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "startVue": "node vue-cli.js -s",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "tianjian_sky <532861047@qq.com>",
+  "author": "tianjian_sky 532861047@qq.com",
+  "homepage": "https://github.com/tianjian-sky/myCli",
   "license": "ISC",
   "dependencies": {
     "commander": "^3.0.2"

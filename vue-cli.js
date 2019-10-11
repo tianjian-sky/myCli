@@ -1,20 +1,15 @@
-const commander = require('commander');
+#!/usr/bin/env node
 
-commander.version('1.0.0')
-    .option('-a, --aaa', 'aaaaa')
-    .option('-b, --bbb', 'bbbbb')
-    .option('-c, --ccc [name]', 'ccccc')
-    .parse(process.argv);
-
-
-if (commander.aaa) {
-    console.log('aaa');
-}
-
-if (commander.bbb) {
-    console.log('bbb');
-}
-
-if (commander.ccc) {
-    console.log('ccc', commander.ccc);
-}
+const program = require('commander');
+ 
+program
+  .option('-d, --debug', 'output extra debugging')
+  .option('-s, --small', 'small pizza size')
+  .option('-p, --pizza-type <type>', 'flavour of pizza');
+ 
+program.parse(process.argv);
+ 
+if (program.debug) console.log(program.opts());
+console.log('pizza details:');
+if (program.small) console.log('- small pizza size');
+if (program.pizzaType) console.log(`- ${program.pizzaType}`);
