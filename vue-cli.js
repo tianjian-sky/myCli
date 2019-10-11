@@ -1,6 +1,15 @@
 #!/usr/bin/env node
+// 上面那行一定要加，告诉shell用node来运行
 
 const program = require('commander');
+const chalk =require('chalk')
+
+console.log(`
+${chalk.yellowBright.bold.bgBlue('                                                            ')}
+${chalk.greenBright.bold.bgBlue('                Hello, welcom to use myCli !                ')}
+${chalk.yellowBright.bold.bgBlue('                                                            ')}
+`);
+
  
 program
   .option('-d, --debug', 'output extra debugging')
