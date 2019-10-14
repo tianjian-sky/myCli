@@ -3,6 +3,18 @@
 
 const program = require('commander');
 const chalk =require('chalk')
+const figlet = require('figlet')
+const inquirer = require('inquirer')
+
+
+// inquirer.registerPrompt('type', )
+
+
+console.log(figlet.textSync('Tianjian SKY\'s CLI TOOL\'!', {
+  font: 'Ghost',
+  horizontalLayout: 'default',
+  verticalLayout: 'default'
+}));
 
 console.log(`
 ${chalk.yellowBright.bold.bgBlue('                                                            ')}
@@ -22,3 +34,23 @@ if (program.debug) console.log(program.opts());
 console.log('pizza details:');
 if (program.small) console.log('- small pizza size');
 if (program.pizzaType) console.log(`- ${program.pizzaType}`);
+
+inquirer.prompt([{
+  type: 'list',
+  name: 'type',
+  message: 'Please choose which tool you want to use...',
+  choices: [
+    {
+      name: 'vue-tool',
+      value: 'vue',
+      short: 'v'
+    },
+    {
+      name: 'webpack-tool',
+      value: 'webpack',
+      short: 'wp'
+    },
+  ]
+}]).then(answers => {
+  console.log('replay: ', answers)
+})
