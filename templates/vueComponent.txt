@@ -1,0 +1,33 @@
+<template>
+  <div>
+
+  </div>
+</template>
+
+<script>
+export default {
+    name: "${option.name}",
+    components: {},
+    mixins: [],
+    computed: {
+    },
+    watch: {
+    },
+    data () {
+        return {
+        }
+    },
+    methods: {
+    },
+    created () {
+    },
+    mounted () {
+    },
+    beforeDestroy () {
+    }
+}
+</script>
+
+<style lang="${option.style}" scoped>
+
+</style>

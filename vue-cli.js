@@ -35,22 +35,55 @@ console.log('pizza details:');
 if (program.small) console.log('- small pizza size');
 if (program.pizzaType) console.log(`- ${program.pizzaType}`);
 
-inquirer.prompt([{
-  type: 'list',
-  name: 'type',
-  message: 'Please choose which tool you want to use...',
-  choices: [
-    {
-      name: 'vue-tool',
-      value: 'vue',
-      short: 'v'
-    },
-    {
-      name: 'webpack-tool',
-      value: 'webpack',
-      short: 'wp'
-    },
-  ]
-}]).then(answers => {
-  console.log('replay: ', answers)
-})
+
+main()
+
+async function main() {
+  let req = await  inquirer.prompt([{
+    type: 'list',
+    name: 'type',
+    message: 'Please choose which tool you want to use...',
+    choices: [
+      {
+        name: 'vue-tool',
+        value: 'vue',
+        short: 'v'
+      },
+      {
+        name: 'webpack-tool',
+        value: 'webpack',
+        short: 'wp'
+      },
+    ]
+  }])
+  if (req) {
+    let baseType = req.type
+    let subChoices = {
+      vue: [{
+        name: 'generate-component',
+        value: 'gc',
+        short: 'g',
+      }],
+      webpack: []
+    }
+    let req2 = await inquirer.prompt([{
+      type: 'list',
+      name: 'type',
+      message: `Please choose which ${baseType} tool you want to use...`,
+      choices: subChoices[baseType]
+    }])
+    console.log(req2)
+    if (req2) {
+      if (req2.type == 'gc') {
+        let option = {}
+        let req3 = await inquirer.prompt([{
+          type: 'input',
+          name: 'componentName',
+          message: `Please input component name...`,
+        }])
+        console.log(req3)
+      }
+    }
+  }
+}
+
