@@ -5,7 +5,8 @@ const program = require('commander');
 const chalk =require('chalk')
 const figlet = require('figlet')
 const inquirer = require('inquirer')
-
+const fs = require('fs')
+const path =require('path')
 
 // inquirer.registerPrompt('type', )
 
@@ -82,8 +83,20 @@ async function main() {
           message: `Please input component name...`,
         }])
         console.log(req3)
+        await generateComponent(req3)
+
+
       }
     }
   }
 }
 
+async function generateComponent (option) {
+  let filePath = path.resolve(__dirname, './templates/vueComponent.txt')
+  console.log(filePath)
+  let templateFileStr = fs.readFileSync(filePath, {
+    encoding: 'utf-8'
+  })
+  // templateFileStr.replace(/${option.name}/, option.)
+  console.log(templateFile)
+}
