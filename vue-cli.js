@@ -83,9 +83,36 @@ async function main() {
           message: `Please input component name...`,
         }])
         console.log(req3)
-        await generateComponent(req3)
-
-
+        option.componentName = req3.componentName
+        let req4 = await  inquirer.prompt([{
+          type: 'list',
+          name: 'styleProcessor',
+          message: 'Please choose which style processor you want to use...',
+          choices: [
+            {
+              name: 'scss',
+              value: 'scss',
+              short: 'c'
+            },
+            {
+              name: 'sass',
+              value: 'sass',
+              short: 'a'
+            },
+            {
+              name: 'less',
+              value: 'less',
+              short: 'l'
+            },
+            {
+              name: 'css',
+              value: 'css',
+              short: 'c'
+            },
+          ]
+        }])
+        option.styleProcessor = req4.styleProcessor
+        await generateComponent(option)
       }
     }
   }
@@ -97,6 +124,13 @@ async function generateComponent (option) {
   let templateFileStr = fs.readFileSync(filePath, {
     encoding: 'utf-8'
   })
-  // templateFileStr.replace(/${option.name}/, option.)
-  console.log(templateFile)
+  templateFileStr = templateFileStr.replace(/\$\{option\.name\}/, option.componentName)
+  templateFileStr = templateFileStr.replace(/\$\{option\.style\}/, option.styleProcessor)
+  
+  console.log(templateFileStr)
+  const fileName= option.componentName + '.vue'
+  let req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
+    console.log(error);
+  })
+  console.log(1, req)
 }
