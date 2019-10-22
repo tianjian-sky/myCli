@@ -65,7 +65,11 @@ async function main() {
         value: 'gc',
         short: 'g',
       }],
-      webpack: []
+      webpack: [{
+        name: 'generate-webpack-config',
+        value: 'gwp',
+        short: 'gwp',
+      }]
     }
     let req2 = await inquirer.prompt([{
       type: 'list',
@@ -113,6 +117,29 @@ async function main() {
         }])
         option.styleProcessor = req4.styleProcessor
         await generateComponent(option)
+      } else if (req2.type == 'gwp') {
+        let type
+        let req3 = await  inquirer.prompt([{
+          type: 'list',
+          name: 'projectType',
+          message: 'Please choose the project type...',
+          choices: [
+            {
+              name: 'es6+vue',
+              value: 'vue',
+              short: 'v'
+            },
+            {
+              name: 'es6',
+              value: 'es6',
+              short: 'e'
+            },
+          ]
+        }])
+        type = req3.projectType
+        await generateWebpackConfig({
+          type
+        })
       }
     }
   }
@@ -134,3 +161,19 @@ async function generateComponent (option) {
   })
   console.log(1, req)
 }
+
+async function generateWebpackConfig (option) {
+  let filePath = path.resolve(__dirname, './templates/webpack.config.template.js')
+  console.log(filePath)
+  let templateFileStr = fs.readFileSync(filePath, {
+    encoding: 'utf-8'
+  })
+  // templateFileStr = templateFileStr.replace(/\$\{option\.name\}/, option.componentName)
+  // templateFileStr = templateFileStr.replace(/\$\{option\.style\}/, option.styleProcessor)
+  
+  console.log(templateFileStr)
+  const fileName= 'webpack.config.js'
+  let req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
+    console.log(error);
+  })
+}s

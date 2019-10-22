@@ -7,7 +7,11 @@
     "startVue": "node vue-cli.js -s",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "tianjian_sky 532861047@qq.com",
+  "author": { 
+      "name" : "tianjian_sky"
+      , "email" : "532861047@qq.com"
+      , "url" : "https://github.com/tianjian-sky"
+  },
   "homepage": "https://github.com/tianjian-sky/myCli",
   "license": "ISC",
   "dependencies": {
