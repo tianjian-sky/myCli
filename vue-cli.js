@@ -24,23 +24,23 @@ ${chalk.yellowBright.bold.bgBlue('                                              
 `);
 
  
-program
-  .option('-d, --debug', 'output extra debugging')
-  .option('-s, --small', 'small pizza size')
-  .option('-p, --pizza-type <type>', 'flavour of pizza');
+// 解析cli 参数
+// program
+//   .option('-d, --debug', 'output extra debugging')
+//   .option('-s, --small', 'small pizza size')
+//   .option('-p, --pizza-type <type>', 'flavour of pizza');
  
-program.parse(process.argv);
+// program.parse(process.argv);
  
-if (program.debug) console.log(program.opts());
-console.log('pizza details:');
-if (program.small) console.log('- small pizza size');
-if (program.pizzaType) console.log(`- ${program.pizzaType}`);
-
+// if (program.debug) console.log(program.opts());
+// console.log('pizza details:');
+// if (program.small) console.log('- small pizza size');
+// if (program.pizzaType) console.log(`- ${program.pizzaType}`);
 
 main()
 
 async function main() {
-  let req = await  inquirer.prompt([{
+  let req = await inquirer.prompt([{
     type: 'list',
     name: 'type',
     message: 'Please choose which tool you want to use...',
@@ -64,6 +64,10 @@ async function main() {
         name: 'generate-component',
         value: 'gc',
         short: 'g',
+      }, {
+        name: 'generate-mixin',
+        value: 'gm',
+        short: 'm',
       }],
       webpack: [{
         name: 'generate-webpack-config',
@@ -117,6 +121,16 @@ async function main() {
         }])
         option.styleProcessor = req4.styleProcessor
         await generateComponent(option)
+      } else if (req2.type == 'gm') {
+        let option = {}
+        let req3 = await inquirer.prompt([{
+          type: 'input',
+          name: 'fileName',
+          message: `Please input file name...`,
+        }])
+        console.log(req3)
+        option.fileName = req3.fileName + '.js' || 'mixin.js'
+        await generateMixin(option)
       } else if (req2.type == 'gwp') {
         let type
         let req3 = await  inquirer.prompt([{
@@ -162,6 +176,21 @@ async function generateComponent (option) {
   console.log(1, req)
 }
 
+async function generateMixin (option) {
+  let filePath = path.resolve(__dirname, './templates/vueMixin.txt')
+  console.log(filePath)
+  let templateFileStr = fs.readFileSync(filePath, {
+    encoding: 'utf-8'
+  })
+  
+  console.log(templateFileStr)
+  const fileName= option.fileName
+  let req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
+    console.log(error);
+  })
+  console.log(1, req)
+}
+
 async function generateWebpackConfig (option) {
   let filePath = path.resolve(__dirname, './templates/webpack.config.template.js')
   console.log(filePath)
@@ -176,4 +205,4 @@ async function generateWebpackConfig (option) {
   let req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
     console.log(error);
   })
-}s
+}

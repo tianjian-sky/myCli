@@ -22,7 +22,7 @@
   },
   "preferGlobal": "true",
   "bin": {
-    "myVueCli": "./vue-cli.js"
+    "myCli": "./vue-cli.js"
   },
   "repository": {
     "type": "git",
