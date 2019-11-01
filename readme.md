@@ -10,7 +10,7 @@ $ npm i -g tianjian-mycli
 ## How to use
 * open the terminal and type the command
 ``` bash
-$ myVueCli
+$ myCli
 ```
 There will be several tools under this package, choose the tool you wish to use.
 
