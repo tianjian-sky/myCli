@@ -37,10 +37,15 @@ module.exports = {
             },    
             {
                 test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader'
-                }
+                exclude: file =>{
+                    return ( /node_modules/.test(file) && !/\.vue\.js/.test(file)) // 引入node_models里的vue组件也需要预处理
+                },
+                use: [{
+                    loader: 'babel-loader',
+                    options: {
+                        configFile: path.resolve(__dirname, '.babelrc') // 引入node_models里的vue组件也需要预处理，elment-ui本身无.babelrc，因此指定一个全局的babel配置
+                    }
+                }]
             },
             {
                 test: /\.json$/,
@@ -48,16 +53,11 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                // use: [
-                //     {loader: 'style-loader'},
-                //     {loader: 'css-loader'},
-                //     {loader: 'postcss-loader'}
-                // ]
-                use: ['vue-style-loader', 'css-loader']
+                use: ['vue-style-loader', 'css-loader', 'postcss-loader']
             },
             {
                 test: /\.scss$/,
-                use: ['vue-style-loader', 'css-loader', 'sass-loader']
+                use: ['vue-style-loader', 'css-loader', 'sass-loader', 'postcss-loader']
             },
             {
                 test: /\.(png|jpg|gif)$/,
