@@ -193,16 +193,47 @@ async function generateMixin (option) {
 
 async function generateWebpackConfig (option) {
   let filePath = path.resolve(__dirname, './templates/webpack.config.template.js')
-  console.log(filePath)
   let templateFileStr = fs.readFileSync(filePath, {
     encoding: 'utf-8'
   })
-  // templateFileStr = templateFileStr.replace(/\$\{option\.name\}/, option.componentName)
-  // templateFileStr = templateFileStr.replace(/\$\{option\.style\}/, option.styleProcessor)
-  
-  console.log(templateFileStr)
-  const fileName= 'webpack.config.js'
+  let fileName= 'webpack.config.js'
   let req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
+    console.log(error);
+  })
+
+  filePath = path.resolve(__dirname, './templates/webpack.config.template.js')
+  templateFileStr = fs.readFileSync(filePath, {
+    encoding: 'utf-8'
+  })
+  fileName= 'webpack.config.js'
+  req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
+    console.log(error);
+  })
+
+  filePath = path.resolve(__dirname, './templates/.browserlistrc')
+  templateFileStr = fs.readFileSync(filePath, {
+    encoding: 'utf-8'
+  })
+  fileName= '.browserlistrc'
+  req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
+    console.log(error);
+  })
+
+  filePath = path.resolve(__dirname, './templates/postcss.config.template.js')
+  templateFileStr = fs.readFileSync(filePath, {
+    encoding: 'utf-8'
+  })
+  fileName= 'pstcss.config.js'
+  req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
+    console.log(error);
+  })
+
+  filePath = path.resolve(__dirname, './templates/.babelrc')
+  templateFileStr = fs.readFileSync(filePath, {
+    encoding: 'utf-8'
+  })
+  fileName= '.babelrc'
+  req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
     console.log(error);
   })
 }
