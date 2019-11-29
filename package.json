@@ -18,7 +18,8 @@
     "chalk": "^2.4.2",
     "commander": "^3.0.2",
     "figlet": "^1.2.4",
-    "inquirer": "^7.0.0"
+    "inquirer": "^7.0.0",
+    "node-run-cmd": "^1.0.1"
   },
   "preferGlobal": "true",
   "bin": {

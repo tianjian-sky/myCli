@@ -236,4 +236,26 @@ async function generateWebpackConfig (option) {
   req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
     console.log(error);
   })
+
+  let vueDeps = ['vue', 'vue-loader', 'vue-router', 'vue-style-loader', 'vue-template-compiler', 'vuex']
+  let devDepenencies = ['webpack-dev-server']
+  let dependencies = ['@babel/core', '@babel/preset-env', 'core-js', 'autoprefixer' , 'axios' , '@babel/plugin-transform-async-to-generator', 'cross-env', 'css-loader', 'file-loader', 'html-webpack-plugin', 'postcss', 'postcss-loader', 'sass-loader', 'scss', 'scss-loader', 'style-loader', 'transfer-webpack-plugin', 'url-loader', 'webpack', 'webpack-cli']
+
+  let cmdPkg = 'npm init'
+  let cmdGit = 'git init'
+  let cmdDevDeps = ''
+  let cmdDeps = ''
+  if(devDepenencies.length) {
+    cmdDevDeps= `npm i --save-dev ${devDepenencies.join(' ')}`
+  }
+  if(dependencies.length) {
+    if (option.type == 'vue') {
+      dependencies = dependencies.concat(vueDeps)
+    }
+    cmdDeps= `npm i --save ${dependencies.join(' ')}`
+  }
+  const nrc = require('node-run-cmd');
+  let cmd1 = nrc.run(cmdPkg);
+  console.log(cmd1)
+  let cmd2 =  nrc.run(cmdGit)
 }
