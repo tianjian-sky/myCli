@@ -7,6 +7,15 @@ const figlet = require('figlet')
 const inquirer = require('inquirer')
 const fs = require('fs')
 const path =require('path')
+const os = require('os');
+
+
+
+
+
+
+let platform = os.platform();
+console.log(platform)
 
 // inquirer.registerPrompt('type', )
 
@@ -51,9 +60,9 @@ async function main() {
         short: 'v'
       },
       {
-        name: 'webpack-tool',
-        value: 'webpack',
-        short: 'wp'
+        name: 'generate project skeleton',
+        value: 'project',
+        short: 'p'
       },
     ]
   }])
@@ -69,10 +78,10 @@ async function main() {
         value: 'gm',
         short: 'm',
       }],
-      webpack: [{
-        name: 'generate-webpack-config',
-        value: 'gwp',
-        short: 'gwp',
+      project: [{
+        name: 'generate-project-skeleton',
+        value: 'gp',
+        short: 'gp',
       }]
     }
     let req2 = await inquirer.prompt([{
@@ -131,7 +140,7 @@ async function main() {
         console.log(req3)
         option.fileName = req3.fileName + '.js' || 'mixin.js'
         await generateMixin(option)
-      } else if (req2.type == 'gwp') {
+      } else if (req2.type == 'gp') {
         let type
         let req3 = await  inquirer.prompt([{
           type: 'list',
@@ -151,7 +160,7 @@ async function main() {
           ]
         }])
         type = req3.projectType
-        await generateWebpackConfig({
+        await generateProject({
           type
         })
       }
@@ -191,7 +200,75 @@ async function generateMixin (option) {
   console.log(1, req)
 }
 
-async function generateWebpackConfig (option) {
+async function generateProject (option) {
+  let vueDeps = ['vue', 'vue-loader', 'vue-router', 'vue-style-loader', 'vue-template-compiler', 'vuex']
+  let devDepenencies = ['webpack-dev-server']
+  let dependencies = ['@babel/core', '@babel/preset-env', 'core-js', 'autoprefixer' , 'axios' , '@babel/plugin-transform-async-to-generator', 'cross-env', 'css-loader', 'file-loader', 'html-webpack-plugin', 'postcss', 'postcss-loader', 'sass-loader', 'scss', 'scss-loader', 'style-loader', 'transfer-webpack-plugin', 'url-loader', 'webpack', 'webpack-cli']
+
+  let cmdPkg = 'npm init'
+  let cmdGit = 'git init'
+  let cmdDevDeps = ''
+  let cmdDeps = ''
+  if(devDepenencies.length) {
+    cmdDevDeps= `npm i --save-dev ${devDepenencies.join(' ')}`
+  }
+  if(dependencies.length) {
+    if (option.type == 'vue') {
+      dependencies = dependencies.concat(vueDeps)
+    }
+    cmdDeps= `npm i --save ${dependencies.join(' ')}`
+  }
+  const nrc = require('node-run-cmd');
+  console.log('now initial package.json ......')
+  let cmd1 = await nrc.run(cmdPkg, {
+    onData (data) {
+      console.log('command ondata', data)
+    },
+    onDone (data) {
+      console.log('command done', data)
+    },
+    shell: true,
+    detached: true
+  })
+  console.log('now initial git ......')
+  let cmdg = await nrc.run(cmdGit, {
+    onData (data) {
+      console.log('command ondata', data)
+    },
+    onDone (data) {
+      console.log('command done', data)
+    },
+    shell: true,
+    detached: true
+  })
+  console.log(cmd1)
+  if (cmdDevDeps) {
+    console.log('now install dev dependencies......')
+    let cmd2 = await nrc.run(cmdDevDeps, {
+      onData (data) {
+        console.log('command ondata', data)
+      },
+      onDone (data) {
+        console.log('command done', data)
+      },
+      shell: true,
+      detached: true
+    })
+  }
+  if (cmdDeps) {
+    console.log('now install dev dependencies......')
+    let cmd2 = await nrc.run(cmdDeps, {
+      onData (data) {
+        console.log('command ondata', data)
+      },
+      onDone (data) {
+        console.log('command done', data)
+      },
+      shell: true,
+      detached: true
+    })
+  }
+  console.log('now initial config file(webpack, postcss, babel, browerlist...) ......')
   let filePath = path.resolve(__dirname, './templates/webpack.config.template.js')
   let templateFileStr = fs.readFileSync(filePath, {
     encoding: 'utf-8'
@@ -236,26 +313,31 @@ async function generateWebpackConfig (option) {
   req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
     console.log(error);
   })
-
-  let vueDeps = ['vue', 'vue-loader', 'vue-router', 'vue-style-loader', 'vue-template-compiler', 'vuex']
-  let devDepenencies = ['webpack-dev-server']
-  let dependencies = ['@babel/core', '@babel/preset-env', 'core-js', 'autoprefixer' , 'axios' , '@babel/plugin-transform-async-to-generator', 'cross-env', 'css-loader', 'file-loader', 'html-webpack-plugin', 'postcss', 'postcss-loader', 'sass-loader', 'scss', 'scss-loader', 'style-loader', 'transfer-webpack-plugin', 'url-loader', 'webpack', 'webpack-cli']
-
-  let cmdPkg = 'npm init'
-  let cmdGit = 'git init'
-  let cmdDevDeps = ''
-  let cmdDeps = ''
-  if(devDepenencies.length) {
-    cmdDevDeps= `npm i --save-dev ${devDepenencies.join(' ')}`
-  }
-  if(dependencies.length) {
-    if (option.type == 'vue') {
-      dependencies = dependencies.concat(vueDeps)
-    }
-    cmdDeps= `npm i --save ${dependencies.join(' ')}`
-  }
-  const nrc = require('node-run-cmd');
-  let cmd1 = nrc.run(cmdPkg);
-  console.log(cmd1)
-  let cmd2 =  nrc.run(cmdGit)
+ 
+  console.log('now initial project folders')
+  await nrc.run(['mkdir dist', 'mkdir src', 'mkdir static'], {
+    onData (data) {
+      console.log('command ondata', data)
+    },
+    onDone (data) {
+      console.log('command done', data)
+    },
+    shell: true,
+    detached: true
+  })
+  let cdCmd = platform.indexOf('win') >= 0 ? 'cd ' : 'cd '
+  let touchCmd = platform.indexOf('win') >= 0 ? 'cd .> ' : 'touch '
+  await nrc.run(['mkdir components', 'mkdir assets', 'mkdir pages', 'mkdir styles', `${touchCmd}main.js`], {
+    onData (data) {
+      console.log('command ondata', data)
+    },
+    onDone (data) {
+      console.log('command done', data)
+    },
+    shell: true,
+    detached: true,
+    cwd: path.resolve(process.cwd(), './src')
+  })
+  console.log(path.resolve(process.cwd(), './src'))
+  console.log('project initial complete .....')
 }
