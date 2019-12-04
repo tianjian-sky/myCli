@@ -3,6 +3,7 @@
 
 const program = require('commander');
 const chalk =require('chalk')
+const ora = require('ora');
 const figlet = require('figlet')
 const inquirer = require('inquirer')
 const fs = require('fs')
@@ -183,6 +184,12 @@ async function generateComponent (option) {
     console.log(error);
   })
   console.log(1, req)
+  const spinner = new ora({
+    discardStdin: false,
+    text: '组件创建成功',
+    spinner: process.argv[2]
+  }).start().succeed()
+  
 }
 
 async function generateMixin (option) {
@@ -197,7 +204,11 @@ async function generateMixin (option) {
   let req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
     console.log(error);
   })
-  console.log(1, req)
+  const spinner = new ora({
+    discardStdin: false,
+    text: 'mixin创建成功',
+    spinner: process.argv[2]
+  }).start().succeed()
 }
 
 async function generateProject (option) {
@@ -219,56 +230,68 @@ async function generateProject (option) {
     cmdDeps= `npm i --save ${dependencies.join(' ')}`
   }
   const nrc = require('node-run-cmd');
-  console.log('now initial package.json ......')
+  const spinner1 = new ora({
+    discardStdin: false,
+    text: '正在初始化package.json...',
+    spinner: process.argv[2]
+  }).start()
   let cmd1 = await nrc.run(cmdPkg, {
     onData (data) {
-      console.log('command ondata', data)
     },
     onDone (data) {
-      console.log('command done', data)
     },
     shell: true,
     detached: true
   })
-  console.log('now initial git ......')
+  spinner1.text = `${chalk.green('package.json初始化完毕')}`
+  spinner1.succeed()
+  const spinner2 = new ora({
+    discardStdin: false,
+    text: '正在初始化git...',
+    spinner: process.argv[2]
+  }).start()
   let cmdg = await nrc.run(cmdGit, {
     onData (data) {
-      console.log('command ondata', data)
     },
     onDone (data) {
-      console.log('command done', data)
     },
     shell: true,
     detached: true
   })
-  console.log(cmd1)
+  spinner2.text = `${chalk.green('git初始化完毕')}`
+  spinner2.succeed()
+  const spinner3 = new ora({
+    discardStdin: false,
+    text: '正在安装npm依赖...',
+    spinner: process.argv[2]
+  }).start()
   if (cmdDevDeps) {
-    console.log('now install dev dependencies......')
     let cmd2 = await nrc.run(cmdDevDeps, {
       onData (data) {
-        console.log('command ondata', data)
       },
       onDone (data) {
-        console.log('command done', data)
       },
       shell: true,
       detached: true
     })
   }
   if (cmdDeps) {
-    console.log('now install dev dependencies......')
     let cmd2 = await nrc.run(cmdDeps, {
       onData (data) {
-        console.log('command ondata', data)
       },
       onDone (data) {
-        console.log('command done', data)
       },
       shell: true,
       detached: true
     })
   }
-  console.log('now initial config file(webpack, postcss, babel, browerlist...) ......')
+  spinner3.text = `${chalk.green('npm依赖安装完毕')}`
+  spinner3.succeed()
+  const spinner4 = new ora({
+    discardStdin: false,
+    text: '正在生成项目配置文件(webpack, postcss, babel, browerlist...) ',
+    spinner: process.argv[2]
+  }).start()
   let filePath = path.resolve(__dirname, './templates/webpack.config.template.js')
   let templateFileStr = fs.readFileSync(filePath, {
     encoding: 'utf-8'
@@ -313,14 +336,17 @@ async function generateProject (option) {
   req = fs.writeFileSync(path.resolve(`./` + fileName), templateFileStr, function(error){
     console.log(error);
   })
- 
-  console.log('now initial project folders')
+  spinner4.text = `${chalk.green('项目配置文件生成完毕')}`
+  spinner4.succeed()
+  const spinner5 = new ora({
+    discardStdin: false,
+    text: '正在初始化项目目录结构... ',
+    spinner: process.argv[2]
+  }).start()
   await nrc.run(['mkdir dist', 'mkdir src', 'mkdir static'], {
     onData (data) {
-      console.log('command ondata', data)
     },
     onDone (data) {
-      console.log('command done', data)
     },
     shell: true,
     detached: true
@@ -329,15 +355,18 @@ async function generateProject (option) {
   let touchCmd = platform.indexOf('win') >= 0 ? 'cd .> ' : 'touch '
   await nrc.run(['mkdir components', 'mkdir assets', 'mkdir pages', 'mkdir styles', `${touchCmd}main.js`], {
     onData (data) {
-      console.log('command ondata', data)
     },
     onDone (data) {
-      console.log('command done', data)
     },
     shell: true,
     detached: true,
     cwd: path.resolve(process.cwd(), './src')
   })
-  console.log(path.resolve(process.cwd(), './src'))
-  console.log('project initial complete .....')
+  spinner5.text = `${chalk.green('项目目录结构生成完毕')}`
+  spinner5.succeed()
+  const spinner6 = new ora({
+    discardStdin: false,
+    text: `${chalk.green('一切就绪... ')}`,
+    spinner: process.argv[2]
+  }).start().succeed()
 }

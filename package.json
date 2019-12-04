@@ -19,7 +19,8 @@
     "commander": "^3.0.2",
     "figlet": "^1.2.4",
     "inquirer": "^7.0.0",
-    "node-run-cmd": "^1.0.1"
+    "node-run-cmd": "^1.0.1",
+    "ora": "^4.0.3"
   },
   "preferGlobal": "true",
   "bin": {
