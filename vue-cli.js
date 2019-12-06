@@ -210,8 +210,8 @@ async function generateMixin (option) {
 
 async function generateProject (option) {
   let vueDeps = ['vue', 'vue-loader', 'vue-router', 'vue-style-loader', 'vue-template-compiler', 'vuex']
-  let devDepenencies = ['webpack-dev-server']
-  let dependencies = ['@babel/core', '@babel/preset-env', 'core-js', 'autoprefixer' , 'axios' , '@babel/plugin-transform-async-to-generator', 'cross-env', 'css-loader', 'file-loader', 'html-webpack-plugin', 'postcss', 'postcss-loader', 'sass-loader', 'scss', 'scss-loader', 'style-loader', 'transfer-webpack-plugin', 'url-loader', 'webpack', 'webpack-cli']
+  let devDepenencies = ['webpack-dev-server', 'babel-plugin-component']
+  let dependencies = ['@babel/core', '@babel/preset-env', 'core-js', 'autoprefixer' , 'axios' , '@babel/plugin-proposal-optional-chaining', '@babel/plugin-transform-runtime', 'cross-env', 'css-loader', 'file-loader', 'html-webpack-plugin', 'postcss', 'postcss-loader', 'sass-loader', 'scss', 'scss-loader', 'style-loader', 'transfer-webpack-plugin', 'url-loader', 'webpack', 'webpack-cli']
 
   let cmdPkg = 'npm init'
   let cmdGit = 'git init'
