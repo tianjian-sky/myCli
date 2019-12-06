@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 // 上面那行一定要加，告诉shell用node来运行
 
-const program = require('commander');
+const program = require('commander')
 const chalk =require('chalk')
-const ora = require('ora');
+const ora = require('ora')
+const boxen = require('boxen')
 const figlet = require('figlet')
 const inquirer = require('inquirer')
 const fs = require('fs')
 const path =require('path')
-const os = require('os');
+const os = require('os')
 
 
 
@@ -22,16 +23,12 @@ console.log(platform)
 
 
 console.log(figlet.textSync('Tianjian SKY\'s CLI TOOL\'!', {
-  font: 'Ghost',
+  font: 'Big',
   horizontalLayout: 'default',
   verticalLayout: 'default'
 }));
 
-console.log(`
-${chalk.yellowBright.bold.bgBlue('                                                            ')}
-${chalk.greenBright.bold.bgBlue('                Hello, welcom to use myCli !                ')}
-${chalk.yellowBright.bold.bgBlue('                                                            ')}
-`);
+console.log(`${boxen('Hello, welcom to use ' + chalk.rgb(253,109,192)('myCli') + ' !', {padding: 1, margin: 1, borderStyle: 'classic'})}`);
 
  
 // 解析cli 参数
