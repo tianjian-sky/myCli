@@ -38,7 +38,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: file =>{
-                    return ( /node_modules/.test(file) && !/\.vue\.js/.test(file)) // 引入node_models里的vue组件也需要预处理
+                    return (/node_modules/.test(file) && (/element-ui[\/\\]lib/.test(file) || !/element-ui/.test(file))) // 引入node_models里的vue组件也需要预处理
                 },
                 use: [{
                     loader: 'babel-loader',
