@@ -211,7 +211,7 @@ async function generateMixin (option) {
 async function generateProject (option) {
   let vueDeps = ['vue', 'vue-loader', 'vue-router', 'vue-style-loader', 'vue-template-compiler', 'vuex']
   let devDepenencies = ['webpack-dev-server', 'babel-plugin-component']
-  let dependencies = ['@babel/core', '@babel/preset-env', 'core-js', 'autoprefixer' , 'axios' , '@babel/plugin-proposal-optional-chaining', '@babel/plugin-transform-runtime', 'cross-env', 'css-loader', 'file-loader', 'html-webpack-plugin', 'postcss', 'postcss-loader', 'sass-loader', 'scss', 'scss-loader', 'style-loader', 'transfer-webpack-plugin', 'url-loader', 'webpack', 'webpack-cli']
+  let dependencies = ['@babel/core', '@babel/preset-env', 'core-js', 'autoprefixer' , 'axios' , '@babel/plugin-proposal-optional-chaining', '@babel/plugin-transform-runtime', 'cross-env', 'css-loader', 'file-loader', 'html-webpack-plugin', 'postcss', 'postcss-loader', 'sass-loader', 'scss', 'scss-loader', 'style-loader', 'transfer-webpack-plugin', 'url-loader', 'webpack', 'webpack-cli', 'babel-loader']
 
   let cmdPkg = 'npm init'
   let cmdGit = 'git init'
@@ -350,7 +350,7 @@ async function generateProject (option) {
   })
   let cdCmd = platform.indexOf('win') >= 0 ? 'cd ' : 'cd '
   let touchCmd = platform.indexOf('win') >= 0 ? 'cd .> ' : 'touch '
-  await nrc.run(['mkdir components', 'mkdir assets', 'mkdir pages', 'mkdir styles', `${touchCmd}main.js`], {
+  await nrc.run(['mkdir components', 'mkdir assets', 'mkdir configs', 'mkdir pages', 'mkdir styles', `${touchCmd}main.js`], {
     onData (data) {
     },
     onDone (data) {
@@ -358,6 +358,15 @@ async function generateProject (option) {
     shell: true,
     detached: true,
     cwd: path.resolve(process.cwd(), './src')
+  })
+  await nrc.run([`${touchCmd}config.dev.js`, `${touchCmd}config.pro.js`], {
+    onData (data) {
+    },
+    onDone (data) {
+    },
+    shell: true,
+    detached: true,
+    cwd: path.resolve(process.cwd(), './src/configs')
   })
   spinner5.text = `${chalk.green('项目目录结构生成完毕')}`
   spinner5.succeed()
